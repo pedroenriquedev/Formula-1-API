@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Driver {
+  id              String         @id @default(uuid())
+  first_name      String
+  last_name       String
+  birthdate       DateTime
+  nationality     String
+  current_team    Constructor?   @relation(fields: [current_team_id], references: [id])
+  current_team_id String
+  qualifying      Qualifying[]
+  raceResult      RaceResult[]
+  SprintResult    SprintResult[]
+
+  @@unique([first_name, last_name])
+}
+
+model Constructor {
+  id           String         @id @default(uuid())
+  name         String
+  country      String
+  is_active    Boolean
+  driver       Driver[]
+  qualifying   Qualifying[]
+  raceResult   RaceResult[]
+  SprintResult SprintResult[]
+
+  @@unique([name, country])
+}
+
+model Circuit {
+  id      String @id @default(uuid())
+  name    String
+  city    String
+  state   String
+  country String
+  races   Race[]
+
+  @@unique([city, state, country])
+}
+
+model Season {
+  year  Int    @unique
+  races Race[]
+}
+
+model Race {
+  id           String         @id @default(uuid())
+  year         Season         @relation(fields: [seasonYear], references: [year])
+  seasonYear   Int
+  round        Int            @default(0)
+  circuit      Circuit        @relation(fields: [circuitId], references: [id])
+  circuitId    String
+  name         String
+  laps         Int
+  date         DateTime       @db.Date
+  time         DateTime       @db.Timetz()
+  quali_date   DateTime       @db.Date
+  quali_time   DateTime       @db.Timetz()
+  sprint_date  DateTime?      @db.Date
+  sprint_time  DateTime?      @db.Timetz()
+  qualifying   Qualifying[]
+  raceResult   RaceResult[]
+  SprintResult SprintResult[]
+}
+
+model Qualifying {
+  id            String      @id @default(uuid())
+  race          Race        @relation(fields: [raceId], references: [id])
+  driver        Driver      @relation(fields: [driverId], references: [id])
+  team          Constructor @relation(fields: [constructorId], references: [id])
+  number        Int
+  position      Int
+  lap_time      DateTime    @db.Time(6)
+  raceId        String
+  driverId      String
+  constructorId String
+}
+
+model RaceResult {
+  id               String      @id @default(uuid())
+  race             Race        @relation(fields: [raceId], references: [id])
+  driver           Driver      @relation(fields: [driverId], references: [id])
+  team             Constructor @relation(fields: [constructorId], references: [id])
+  number           Int
+  grid_position    Int
+  dnf              Boolean?
+  end_position     Int
+  points           Float
+  laps             Int
+  time             DateTime    @db.Time(6)
+  fastest_lap      Int
+  fastest_lap_time DateTime    @db.Time(6)
+  raceId           String
+  driverId         String
+  constructorId    String
+}
+
+model SprintResult {
+  id               String      @id @default(uuid())
+  race             Race        @relation(fields: [raceId], references: [id])
+  driver           Driver      @relation(fields: [driverId], references: [id])
+  team             Constructor @relation(fields: [constructorId], references: [id])
+  number           Int
+  grid_position    Int
+  dnf              Boolean?
+  end_position     Int
+  points           Float
+  laps             Int
+  time             DateTime    @db.Time(6)
+  fastest_lap      Int
+  fastest_lap_time DateTime    @db.Time(6)
+  raceId           String
+  driverId         String
+  constructorId    String
+}
+
+// run this to update the model on the DB npx prisma migrate dev --name init
