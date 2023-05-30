@@ -1,5 +1,5 @@
 import { db } from '../utils/db.server'
-import { createRecord, deleteRecord, getAllRecords, updateRecord } from '../utils/apiFactory'
+import { createRecord, deleteRecord, getAllRecords, updateRecord } from '../utils/handlerFactory'
 
 export const getAllConstructors = getAllRecords(db.constructor);
 
