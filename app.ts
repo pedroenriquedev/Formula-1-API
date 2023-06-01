@@ -19,15 +19,10 @@ app.use(`${apiURL}/race`, routes.raceRoute);
 app.use(`${apiURL}/sprintresult`, routes.sprintResultRoute);
 
 app.use(`${apiURL}/getdata`, async (req, res, next) => {
-	const apiurl = 'http://ergast.com/api/f1/2023/drivers.json';
-
-	const data = await fetch(apiurl);
-	const dataJson = await data.json();
-
-	console.log(dataJson.MRData.DriverTable.Drivers);
-
+	
+	
 	res.status(200).json({
-		message: 'data!' 
+		message: 'data!'
 	})
 })
 
