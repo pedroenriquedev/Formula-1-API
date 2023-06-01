@@ -19,7 +19,7 @@ model Driver {
   birthdate       DateTime
   nationality     String
   current_team    Constructor?   @relation(fields: [current_team_id], references: [id])
-  current_team_id String
+  current_team_id String?
   qualifying      Qualifying[]
   raceResult      RaceResult[]
   SprintResult    SprintResult[]
