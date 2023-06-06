@@ -63,16 +63,14 @@ model Race {
   circuit      Circuit        @relation(fields: [circuitId], references: [id])
   circuitId    String
   name         String
-  laps         Int
   date         DateTime       @db.Date
-  time         DateTime       @db.Timetz()
   quali_date   DateTime       @db.Date
-  quali_time   DateTime       @db.Timetz()
   sprint_date  DateTime?      @db.Date
-  sprint_time  DateTime?      @db.Timetz()
   qualifying   Qualifying[]
   raceResult   RaceResult[]
   SprintResult SprintResult[]
+
+  @@unique([date, circuitId])
 }
 
 model Qualifying {
@@ -82,48 +80,52 @@ model Qualifying {
   team          Constructor @relation(fields: [constructorId], references: [id])
   number        Int
   position      Int
-  lap_time      DateTime    @db.Time(6)
+  q1            String
+  q2            String
+  q3            String
   raceId        String
   driverId      String
   constructorId String
 }
 
 model RaceResult {
-  id               String      @id @default(uuid())
-  race             Race        @relation(fields: [raceId], references: [id])
-  driver           Driver      @relation(fields: [driverId], references: [id])
-  team             Constructor @relation(fields: [constructorId], references: [id])
-  number           Int
-  grid_position    Int
-  dnf              Boolean?
-  end_position     Int
-  points           Float
-  laps             Int
-  time             DateTime    @db.Time(6)
-  fastest_lap      Int
-  fastest_lap_time DateTime    @db.Time(6)
-  raceId           String
-  driverId         String
-  constructorId    String
+  id                   String      @id @default(uuid())
+  race                 Race        @relation(fields: [raceId], references: [id])
+  driver               Driver      @relation(fields: [driverId], references: [id])
+  team                 Constructor @relation(fields: [constructorId], references: [id])
+  number               Int
+  grid_position        Int
+  end_position         Int
+  points               Float
+  laps                 Int
+  time                 String
+  time_in_milliseconds String
+  fastest_lap          Int
+  fastest_lap_time     String
+  fastest_lap_speed    String
+  raceId               String
+  driverId             String
+  constructorId        String
 }
 
 model SprintResult {
-  id               String      @id @default(uuid())
-  race             Race        @relation(fields: [raceId], references: [id])
-  driver           Driver      @relation(fields: [driverId], references: [id])
-  team             Constructor @relation(fields: [constructorId], references: [id])
-  number           Int
-  grid_position    Int
-  dnf              Boolean?
-  end_position     Int
-  points           Float
-  laps             Int
-  time             DateTime    @db.Time(6)
-  fastest_lap      Int
-  fastest_lap_time DateTime    @db.Time(6)
-  raceId           String
-  driverId         String
-  constructorId    String
+  id                   String      @id @default(uuid())
+  race                 Race        @relation(fields: [raceId], references: [id])
+  driver               Driver      @relation(fields: [driverId], references: [id])
+  team                 Constructor @relation(fields: [constructorId], references: [id])
+  number               Int
+  grid_position        Int
+  end_position         Int
+  points               Float
+  laps                 Int
+  time                 String
+  time_in_milliseconds String
+  fastest_lap          Int
+  fastest_lap_time     String
+  fastest_lap_speed    String
+  raceId               String
+  driverId             String
+  constructorId        String
 }
 
 // run this to update the model on the DB npx prisma migrate dev --name init

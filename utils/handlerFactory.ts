@@ -1,13 +1,35 @@
 import {Request, Response, NextFunction } from 'express'
+import { QueryParser } from './APIFeatures';
+
+
 
 export const getAllRecords = (prisma: any) => async (req: Request, res: Response, next: NextFunction) => {
+    const query = QueryParser.parse(req);
     try {
-        const records = await prisma.findMany();
+        const records = await prisma.findMany(query);
 
         res.status(200).json({ 
             message: 'success',
+            results: records.length,
             records
          });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getOneRecord = (prisma: any) => async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        
+        const record = await prisma.findUnique({
+            where: {id}
+        })
+
+        res.status(200).json({
+            message: 'success',
+            record
+        })
     } catch (error) {
         next(error);
     }
@@ -29,7 +51,6 @@ export const createRecord = (prisma: any) => async (req: Request, res: Response,
         next(error);
     }
 }
-
 
 export const updateRecord = (prisma: any) => async (req: Request, res: Response, next: NextFunction) => {
     try {
