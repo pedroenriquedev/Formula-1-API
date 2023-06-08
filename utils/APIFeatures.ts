@@ -27,8 +27,7 @@ export class QueryParser {
 
         const final_query: FinalQuery = {
             where: parsed_query,
-            orderBy: [],
-            select: {}
+            orderBy: []
         };
 
         this.handlePagination(final_query, parsed_query_obj);

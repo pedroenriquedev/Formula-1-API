@@ -8,7 +8,7 @@ export const getAllRecords = (prisma: any) => async (req: Request, res: Response
     try {
         const records = await prisma.findMany(query);
 
-        res.status(200).json({ 
+        return res.status(200).json({ 
             message: 'success',
             results: records.length,
             records
@@ -26,7 +26,7 @@ export const getOneRecord = (prisma: any) => async (req: Request, res: Response,
             where: {id}
         })
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'success',
             record
         })
@@ -43,7 +43,7 @@ export const createRecord = (prisma: any) => async (req: Request, res: Response,
             data: record_input
         })
 
-        res.status(201).json({
+        return res.status(201).json({
             message: 'success',
             new_record
         })
@@ -61,7 +61,7 @@ export const updateRecord = (prisma: any) => async (req: Request, res: Response,
             data: req.body
         })
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'success',
             record
         })
@@ -77,7 +77,7 @@ export const deleteRecord = (prisma: any) => async (req: Request, res: Response,
             where: { id }
         })
 
-        res.status(204).json({
+        return res.status(204).json({
             message: 'success'
         })
     } catch (error) {

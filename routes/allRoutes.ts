@@ -5,5 +5,6 @@ import { qualifyingRoute } from "./qualifyingRoute"
 import { raceRoute } from "./raceRoute"
 import { raceResultRoute } from "./raceResulRoute"
 import { sprintResultRoute } from "./sprintResultRoute"
+import { userRoute } from "./userRoute"
 
-export default  { circuitRoute, constructorRoute, driverRoute, qualifyingRoute, raceRoute, raceResultRoute, sprintResultRoute }
+export default  { circuitRoute, constructorRoute, driverRoute, qualifyingRoute, raceRoute, raceResultRoute, sprintResultRoute, userRoute }
