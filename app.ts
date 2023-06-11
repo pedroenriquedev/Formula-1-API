@@ -1,9 +1,10 @@
 // Import the express in typescript file
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import routes from './routes/allRoutes'
 import cors from 'cors';
 import helmet from 'helmet'
 import { protect, signUp } from './controllers/authController';
+import ErrorHandler from './utils/errorHandler';
 // Initialize the express engine
 const app: express.Application = express();
 
@@ -43,11 +44,12 @@ app.use(`${apiURL}/race`, routes.raceRoute);
 app.use(`${apiURL}/sprintresult`, routes.sprintResultRoute);
 
 app.use(`${apiURL}/getdata`, async (req, res, next) => {
-	
-	
 	res.status(200).json({
 		message: 'data!'
 	})
 })
+
+
+app.use(ErrorHandler);
 
 export default app;

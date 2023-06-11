@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction } from 'express'
-import { QueryParser } from './APIFeatures';
+import { QueryParser } from './queryHandler';
 
 
 
